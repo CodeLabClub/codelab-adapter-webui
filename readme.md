@@ -10,6 +10,8 @@ Web 技术的跨平台能力是最好的，而且基于 html 和 css 的布局�
 
 <img width=300 src="http://wwj-fig-bed.just4fun.site/webui_0cdd2618.png"  />
 
+通过修改和替换`~/codelab_adapter/src/webui.html`, 你可以使用任何主题的Web UI。
+
 我将当前的Web UI从源码中分离一份到这儿: webui.html(纯前端)，方便社区web开发者据此设计出好看的UI。
 
 # 目标
