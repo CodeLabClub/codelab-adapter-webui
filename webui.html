@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+    <title>web ui</title>
+  </head>
+  <body>
+    <center>
+      <h2>CodeLab Adapter v2 Web UI</h2>
+      <div id="extension-list">
+        <p>status: {{ status }}</p>
+        <div v-for="(url, link_name) in links">
+          <a target="_blank" :href="url">{{ link_name }}</a>
+        </div>
+        <hr />
+        <div v-for="(statu, extension) in extensions_statu">
+          <input
+            type="checkbox"
+            :value="extension"
+            :id="extension"
+            v-model="extensions_statu[extension]"
+            @change="check($event)"
+          />
+          <label :for="extension">{{ extension }}: {{ statu }}</label>
+        </div>
+        <ul id="logs">
+          <li v-for="log in logs.slice().reverse()" class="log">
+            {{ log.event }}: {{ log.data }}
+          </li>
+        </ul>
+      </div>
+    </center>
+    <script>
+      const ADAPTER_TOPIC = "adapter/extensions/data";
+      const SCRATCH_TOPIC = "scratch/extensions/command";
+      const EXTENSIONS_OPERATE_TOPIC = "core/extensions/operate";
+      const EXTENSIONS_STATUS_TOPIC = "core/extensions/status";
+      const EXTENSIONS_STATUS_TRIGGER_TOPIC = "core/extensions/status/trigger";
+      const EXTENSION_STATU_CHANGE_TOPIC = "core/extension/statu/change";
+      const NOTIFICATION_TOPIC = "core/notification";
+
+      const EXTENSION_ID = "eim";
+      const extensions_bar = new Vue({
+        el: "#extension-list",
+        data: {
+          logs: [],
+          status: "disconnected", // connected
+          //checkedExtensions: [],
+          //extensions: ["extension_eim", "extension_eim2"],
+          extensions_statu: {
+            extension_eim: false,
+            extension_mqtt_gateway: false,
+            extension_vector: false,
+            extension_webserver: false,
+            extension_eim_monitor: false,
+            extension_tello: false,
+            extension_HA: false,
+            extension_eim_trigger: false,
+            extension_python_kernel: false,
+            extension_joystick: false,
+            extension_HCI: false,
+            extension_wechat: false,
+            extension_cozmo: false,
+            extension_usb_microbit: false,
+            extension_color_tracking: false
+          },
+          links: {
+            webdebug: "/webdebug",
+            "view log": "/web_log_page",
+            scratch3: "https://scratch3v2.codelab.club"
+          }
+        },
+        methods: {
+          check: function(e) {
+            console.log(`${e.target.value} ${e.target.checked}`);
+            const extension_name = e.target.value;
+            let turn;
+            if (e.target.checked === true) {
+              turn = "start";
+              console.log("start");
+            } else {
+              turn = "stop";
+              console.log("stop");
+            }
+          }
+        },
+        created: function() {
+          // init
+          // this.connect();
+        }
+      });
+    </script>
+  </body>
+</html>
