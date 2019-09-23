@@ -28,9 +28,19 @@
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.35);
       }
+      header div.container {
+        width: 500px;
+        margin: 0 auto;
+      }
+      div.links {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+      }
       div.link a {
         font-size: 13px;
         color: white;
+        margin: 0 12px;
       }
       div.extensions {
         padding-top: 10px;
@@ -47,10 +57,16 @@
   <body>
     <section id="app">
       <header>
-        <h2>CodeLab Adapter v2 Web UI</h2>
-        <p>status: {{ status }}</p>
-        <div class="link" v-for="(url, link_name) in links">
-          <a target="_blank" :href="url">{{ link_name }}</a>
+        <div class="container">
+          <h2>CodeLab Adapter v2 Web UI</h2>
+          <p>status: {{ status }}</p>
+          <p>version: 2.5.1</p>
+          <el-button round>exit</el-button>
+          <div class="links">
+            <div class="link" v-for="(url, link_name) in links">
+              <a target="_blank" :href="url">{{ link_name }}</a>
+            </div>
+          </div>
         </div>
       </header>
       <div id="extension-list">
