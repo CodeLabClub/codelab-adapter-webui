@@ -5,26 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
-    <title>web ui</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/theme-chalk/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/element-ui@2.12.0/lib/index.js"></script>
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>CodeLab Adapter Web UI</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        background-color: white;
+      }
+      section {
+        text-align: center;
+        min-width: 500px;
+      }
+      header {
+        padding: 20px 0;
+        background-color: #4E97FE;
+        color: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.35);
+      }
+      div.link a {
+        font-size: 13px;
+        color: white;
+      }
+      div.extensions {
+        padding-top: 10px;
+      }
+      div.extension {
+        margin: 0 auto;
+        width: 500px;
+        padding: 5px 90px;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
   </head>
   <body>
-    <center>
-      <h2>CodeLab Adapter v2 Web UI</h2>
-      <div id="extension-list">
+    <section id="app">
+      <header>
+        <h2>CodeLab Adapter v2 Web UI</h2>
         <p>status: {{ status }}</p>
-        <div v-for="(url, link_name) in links">
+        <div class="link" v-for="(url, link_name) in links">
           <a target="_blank" :href="url">{{ link_name }}</a>
         </div>
-        <hr />
-        <div v-for="(statu, extension) in extensions_statu">
-          <input
-            type="checkbox"
-            :value="extension"
-            :id="extension"
-            v-model="extensions_statu[extension]"
-            @change="check($event)"
-          />
-          <label :for="extension">{{ extension }}: {{ statu }}</label>
+      </header>
+      <div id="extension-list">
+        <div class="extensions">
+          <div class="extension" v-for="(statu, extension) in extensions_statu">
+              <label for="extension">{{ extension }} </label>
+              <el-switch
+                id="extension"
+                @change="check($event, extension)"
+                v-model="extensions_statu[extension]">
+              </el-switch>
+          </div>
         </div>
         <ul id="logs">
           <li v-for="log in logs.slice().reverse()" class="log">
@@ -32,7 +70,7 @@
           </li>
         </ul>
       </div>
-    </center>
+    </section>
     <script>
       const ADAPTER_TOPIC = "adapter/extensions/data";
       const SCRATCH_TOPIC = "scratch/extensions/command";
@@ -44,7 +82,7 @@
 
       const EXTENSION_ID = "eim";
       const extensions_bar = new Vue({
-        el: "#extension-list",
+        el: "#app",
         data: {
           logs: [],
           status: "disconnected", // connected
@@ -74,11 +112,11 @@
           }
         },
         methods: {
-          check: function(e) {
-            console.log(`${e.target.value} ${e.target.checked}`);
-            const extension_name = e.target.value;
+          check: function(state, extension) {
+            console.log(`${extension} ${state}`);
+            const extension_name = state;
             let turn;
-            if (e.target.checked === true) {
+            if (state === true) {
               turn = "start";
               console.log("start");
             } else {
