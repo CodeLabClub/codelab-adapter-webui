@@ -60,8 +60,8 @@
         <div class="container">
           <h2>CodeLab Adapter v2 Web UI</h2>
           <p>status: {{ status }}</p>
-          <p>version: 2.5.1</p>
-          <el-button round>exit</el-button>
+          <p>version: {{ version }}</p>
+          <el-button round v-on:click="exit_adapter_app">exit</el-button>
           <div class="links">
             <div class="link" v-for="(url, link_name) in links">
               <a target="_blank" :href="url">{{ link_name }}</a>
@@ -102,6 +102,7 @@
         data: {
           logs: [],
           status: "disconnected", // connected
+          version: "2.5.1",
           //checkedExtensions: [],
           //extensions: ["extension_eim", "extension_eim2"],
           extensions_statu: {
@@ -128,6 +129,7 @@
           }
         },
         methods: {
+          exit_adapter_app: function(event) {console.log("exit")},
           check: function(state, extension) {
             console.log(`${extension} ${state}`);
             const extension_name = state;
