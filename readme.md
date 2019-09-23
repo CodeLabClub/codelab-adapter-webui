@@ -6,7 +6,7 @@ Web 技术的跨平台能力是最好的，而且基于 html 和 css 的布局�
 我们前两个版本的UI分别基于 Tkinter 和 PyQt5, 参考:[CodeLab Adapter v2#使用 web UI](https://www.codelab.club/blog/codelab-adapter-v2/#使用-web-ui)
 
 # 现状
-目前[@summerscar](https://github.com/orgs/Scratch3Lab/people/summerscar)构建了简单的 Web UI
+目前[@summerscar](https://github.com/summerscar)构建了简单的 Web UI
 
 <img width=300 src="http://wwj-fig-bed.just4fun.site/scratch_style_webui_a5f9df4d.png"  />
 
