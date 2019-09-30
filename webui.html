@@ -17,18 +17,18 @@
       body {
         background-color: white;
       }
-      section {
+      section#app {
         text-align: center;
         min-width: 500px;
       }
-      header {
+      .header {
         padding: 20px 0;
         background-color: #4E97FE;
         color: white;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.35);
       }
-      header div.container {
+      .header div.container {
         width: 500px;
         margin: 0 auto;
       }
@@ -42,7 +42,7 @@
         color: white;
         margin: 0 12px;
       }
-      div.extensions {
+      div.extensions, .menus {
         padding-top: 10px;
       }
       div.extension {
@@ -51,12 +51,31 @@
         padding: 5px 90px;
         display: flex;
         justify-content: space-between;
+      } 
+      .collapse  .el-collapse-item__header {
+        display: block;
+        text-align: center;
+        background-color: transparent;
+      }
+      .collapse .menuItem {
+        text-align: center;
+        cursor: pointer;
+        padding: 5px 0;
+      }
+      .collapse .menuItem:hover {
+        background-color: rgba(64, 158, 255, 0.15);
+      }
+      .menuBtn {
+        position: fixed;
+        right: -12px;
+        top: 45%;
+        padding-left: 10px;
       }
     </style>
   </head>
   <body>
     <section id="app">
-      <header>
+      <header class="header">
         <div class="container">
           <h2>CodeLab Adapter v2 Web UI</h2>
           <p>status: {{ status }}</p>
@@ -69,23 +88,47 @@
           </div>
         </div>
       </header>
-      <div id="extension-list">
-        <div class="extensions">
-          <div class="extension" v-for="(statu, extension) in extensions_statu">
-              <label for="extension">{{ extension }} </label>
-              <el-switch
-                id="extension"
-                @change="check($event, extension)"
-                v-model="extensions_statu[extension]">
-              </el-switch>
+        <div id="extension-list" key="extension-list">
+          <div class="extensions">
+            <div class="extension" v-for="(statu, extension) in extensions_statu">
+                <label for="extension">{{ extension }} </label>
+                <el-switch
+                  id="extension"
+                  @change="check($event, extension)"
+                  v-model="extensions_statu[extension]">
+                </el-switch>
+            </div>
           </div>
+          <ul id="logs">
+            <li v-for="log in logs.slice().reverse()" class="log">
+              {{ log.event }}: {{ log.data }}
+            </li>
+          </ul>
         </div>
-        <ul id="logs">
-          <li v-for="log in logs.slice().reverse()" class="log">
-            {{ log.event }}: {{ log.data }}
-          </li>
-        </ul>
-      </div>
+        <el-button class="menuBtn" v-on:click="showMenu = !showMenu">{{'<<'}}</el-button>
+        <el-drawer
+          :visible.sync="showMenu"
+          direction="rtl"
+        >
+          <el-collapse class="collapse" accordion>
+            <el-collapse-item title="menu1" name="1">
+              <div class="menuItem" @click="handleClick('1')">item1</div>
+              <div class="menuItem" @click="handleClick('1')">item2</div>
+            </el-collapse-item>
+            <el-collapse-item title="menu2" name="2">
+              <div class="menuItem" @click="handleClick('1')">item1</div>
+              <div class="menuItem" @click="handleClick('1')">item2</div>          
+            </el-collapse-item>
+            <el-collapse-item title="menu3" name="3">
+              <div class="menuItem" @click="handleClick('1')">item1</div>
+              <div class="menuItem" @click="handleClick('1')">item2</div>          
+            </el-collapse-item>
+            <el-collapse-item title="menu4" name="4">
+              <div class="menuItem" @click="handleClick('1')">item1</div>
+              <div class="menuItem" @click="handleClick('1')">item2</div>
+            </el-collapse-item>
+          </el-collapse>
+        </el-drawer>
     </section>
     <script>
       const ADAPTER_TOPIC = "adapter/extensions/data";
@@ -126,7 +169,8 @@
             webdebug: "/webdebug",
             "view log": "/web_log_page",
             scratch3: "https://scratch3v2.codelab.club"
-          }
+          },
+          showMenu: false
         },
         methods: {
           exit_adapter_app: function(event) {console.log("exit")},
@@ -141,6 +185,9 @@
               turn = "stop";
               console.log("stop");
             }
+          },
+          handleClick(val) {
+            console.log('clicked:', val)
           }
         },
         created: function() {
