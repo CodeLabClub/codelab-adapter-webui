@@ -17,18 +17,18 @@
       body {
         background-color: white;
       }
-      section {
+      section#app {
         text-align: center;
         min-width: 500px;
       }
-      header {
+      .header {
         padding: 20px 0;
         background-color: #4E97FE;
         color: white;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         box-shadow: 0px 1px 4px 1px rgba(0, 0, 0, 0.35);
       }
-      header div.container {
+      .header div.container {
         width: 500px;
         margin: 0 auto;
       }
@@ -58,22 +58,28 @@
         background-color: transparent;
       }
       .collapse .menuItem {
+        text-align: center;
         cursor: pointer;
         padding: 5px 0;
       }
       .collapse .menuItem:hover {
         background-color: rgba(64, 158, 255, 0.15);
       }
+      .menuBtn {
+        position: fixed;
+        right: -12px;
+        top: 45%;
+        padding-left: 10px;
+      }
     </style>
   </head>
   <body>
     <section id="app">
-      <header>
+      <header class="header">
         <div class="container">
           <h2>CodeLab Adapter v2 Web UI</h2>
           <p>status: {{ status }}</p>
           <p>version: {{ version }}</p>
-          <el-button round v-on:click="showMenu = !showMenu">{{ showMenu ? 'back' : 'menu' }}</el-button>
           <el-button round v-on:click="exit_adapter_app">exit</el-button>
           <div class="links">
             <div class="link" v-for="(url, link_name) in links">
@@ -82,7 +88,7 @@
           </div>
         </div>
       </header>
-        <div id="extension-list" key="extension-list" v-if="!showMenu">
+        <div id="extension-list" key="extension-list">
           <div class="extensions">
             <div class="extension" v-for="(statu, extension) in extensions_statu">
                 <label for="extension">{{ extension }} </label>
@@ -99,7 +105,11 @@
             </li>
           </ul>
         </div>
-        <div class="menus" key="menus" v-else>
+        <el-button class="menuBtn" v-on:click="showMenu = !showMenu">{{'<<'}}</el-button>
+        <el-drawer
+          :visible.sync="showMenu"
+          direction="rtl"
+        >
           <el-collapse class="collapse" accordion>
             <el-collapse-item title="menu1" name="1">
               <div class="menuItem" @click="handleClick('1')">item1</div>
@@ -118,7 +128,7 @@
               <div class="menuItem" @click="handleClick('1')">item2</div>
             </el-collapse-item>
           </el-collapse>
-        </div>
+        </el-drawer>
     </section>
     <script>
       const ADAPTER_TOPIC = "adapter/extensions/data";
