@@ -107,6 +107,7 @@
         </div>
         <el-button class="menuBtn" v-on:click="showMenu = !showMenu">{{'<<'}}</el-button>
         <el-drawer
+          :modal=false
           :visible.sync="showMenu"
           direction="rtl"
         >
